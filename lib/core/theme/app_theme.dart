@@ -316,4 +316,86 @@ abstract final class AppTheme {
       ),
     );
   }
+
+  static ThemeData highContrastTheme({Color? accentColor}) {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      colorScheme: ColorScheme.dark(
+        primary: Colors.white,
+        secondary: Colors.white,
+        surface: Colors.black,
+        error: Colors.red.shade300,
+        onPrimary: Colors.black,
+        onSecondary: Colors.black,
+        onSurface: Colors.white,
+        onError: Colors.black,
+      ),
+      scaffoldBackgroundColor: Colors.black,
+      cardColor: const Color(0xFF1A1A1A),
+      dividerColor: Colors.white54,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white54,
+        type: BottomNavigationBarType.fixed,
+      ),
+      textTheme: const TextTheme(
+        displayLarge: TextStyle(color: Colors.white),
+        displayMedium: TextStyle(color: Colors.white),
+        displaySmall: TextStyle(color: Colors.white),
+        headlineLarge: TextStyle(color: Colors.white),
+        headlineMedium: TextStyle(color: Colors.white),
+        headlineSmall: TextStyle(color: Colors.white),
+        titleLarge: TextStyle(color: Colors.white),
+        titleMedium: TextStyle(color: Colors.white),
+        titleSmall: TextStyle(color: Colors.white),
+        bodyLarge: TextStyle(color: Colors.white),
+        bodyMedium: TextStyle(color: Colors.white),
+        bodySmall: TextStyle(color: Colors.white70),
+        labelLarge: TextStyle(color: Colors.white),
+        labelMedium: TextStyle(color: Colors.white),
+        labelSmall: TextStyle(color: Colors.white70),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.xxl,
+            vertical: AppSpacing.lg,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.buttonRadius),
+          ),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: const Color(0xFF1A1A1A),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.inputRadius),
+          borderSide: const BorderSide(color: Colors.white54),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.inputRadius),
+          borderSide: const BorderSide(color: Colors.white54),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.inputRadius),
+          borderSide: const BorderSide(color: Colors.white, width: 2),
+        ),
+        labelStyle: const TextStyle(color: Colors.white),
+        hintStyle: const TextStyle(color: Colors.white54),
+      ),
+    );
+  }
 }
