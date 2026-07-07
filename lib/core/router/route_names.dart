@@ -1,0 +1,26 @@
+abstract final class RouteNames {
+  static const splash = '/splash';
+  static const login = '/login';
+  static const register = '/register';
+  static const forgotPassword = '/forgot-password';
+  static const onboarding = '/onboarding';
+  static const dashboard = '/dashboard';
+  static const tasks = '/tasks';
+  static const taskDetails = '/tasks/:id';
+  static const createTask = '/tasks/create';
+  static const habits = '/habits';
+  static const habitDetails = '/habits/:id';
+  static const createHabit = '/habits/create';
+  static const goals = '/goals';
+  static const goalDetails = '/goals/:id';
+  static const createGoal = '/goals/create';
+  static const ai = '/ai';
+  static const aiChat = '/ai/chat';
+  static const analytics = '/analytics';
+  static const health = '/health';
+  static const focus = '/focus';
+  static const calendar = '/calendar';
+  static const settings = '/settings';
+  static const profile = '/profile';
+  static const notifications = '/notifications';
+}
