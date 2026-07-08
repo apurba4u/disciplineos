@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../shared/enums/theme_mode.dart';
+import '../../../../core/theme/theme_provider.dart';
 import '../../../../shared/enums/ai_provider.dart';
 
 class SettingsPage extends ConsumerWidget {
@@ -23,7 +23,7 @@ class SettingsPage extends ConsumerWidget {
                 title: const Text('Theme'),
                 subtitle: const Text('System Default'),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => _showThemeDialog(context),
+                onTap: () => _showThemeDialog(context, ref),
               ),
               ListTile(
                 leading: const Icon(Icons.text_fields),
@@ -149,28 +149,43 @@ class SettingsPage extends ConsumerWidget {
     );
   }
 
-  void _showThemeDialog(BuildContext context) {
+  void _showThemeDialog(BuildContext context, WidgetRef ref) {
+    final themeState = ref.read(themeProvider);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Select Theme'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          children: AppThemeMode.values.map((mode) {
-            final isSelected = mode == AppThemeMode.system;
-            return ListTile(
-              title: Text(mode.label),
-              leading: Icon(
-                isSelected ? Icons.check_circle : Icons.circle_outlined,
-                color: isSelected ? Theme.of(context).colorScheme.primary : null,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            );
-          }).toList(),
+          children: [
+            _buildThemeOption(context, 'Light', ThemeType.light, themeState, ref),
+            _buildThemeOption(context, 'Dark', ThemeType.dark, themeState, ref),
+            _buildThemeOption(context, 'AMOLED', ThemeType.amoled, themeState, ref),
+            _buildThemeOption(context, 'High Contrast', ThemeType.highContrast, themeState, ref),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildThemeOption(
+    BuildContext context,
+    String title,
+    ThemeType themeType,
+    ThemeState currentTheme,
+    WidgetRef ref,
+  ) {
+    final isSelected = currentTheme.themeType == themeType;
+    return ListTile(
+      title: Text(title),
+      leading: Icon(
+        isSelected ? Icons.check_circle : Icons.circle_outlined,
+        color: isSelected ? Theme.of(context).colorScheme.primary : null,
+      ),
+      onTap: () {
+        ref.read(themeProvider.notifier).setTheme(themeType);
+        Navigator.pop(context);
+      },
     );
   }
 
