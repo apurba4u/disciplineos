@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/theme_provider.dart';
+import '../../../../core/theme/font_provider.dart';
 import '../../../../shared/enums/ai_provider.dart';
 
 class SettingsPage extends ConsumerWidget {
@@ -8,6 +9,7 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final fontState = ref.watch(fontProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -28,11 +30,9 @@ class SettingsPage extends ConsumerWidget {
               ListTile(
                 leading: const Icon(Icons.text_fields),
                 title: const Text('Font'),
-                subtitle: const Text('Inter'),
+                subtitle: Text(fontState.fontFamily.label),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () {
-                  // TODO: Navigate to font settings
-                },
+                onTap: () => _showFontDialog(context, ref),
               ),
             ],
           ),
@@ -209,6 +209,38 @@ class SettingsPage extends ConsumerWidget {
               },
             );
           }).toList(),
+        ),
+      ),
+    );
+  }
+
+  void _showFontDialog(BuildContext context, WidgetRef ref) {
+    final fontState = ref.read(fontProvider);
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Select Font'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: FontFamily.values.map((font) {
+              final isSelected = fontState.fontFamily == font;
+              return ListTile(
+                title: Text(
+                  font.label,
+                  style: TextStyle(fontFamily: font.fontFamily),
+                ),
+                leading: Icon(
+                  isSelected ? Icons.check_circle : Icons.circle_outlined,
+                  color: isSelected ? Theme.of(context).colorScheme.primary : null,
+                ),
+                onTap: () {
+                  ref.read(fontProvider.notifier).setFontFamily(font);
+                  Navigator.pop(context);
+                },
+              );
+            }).toList(),
+          ),
         ),
       ),
     );
