@@ -61,7 +61,9 @@ class ProfilePage extends ConsumerWidget {
             const SizedBox(height: 16),
             OutlinedButton(
               onPressed: () {
-                // TODO: Edit profile
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Edit profile coming soon')),
+                );
               },
               child: const Text('Edit Profile'),
             ),
@@ -110,7 +112,9 @@ class ProfilePage extends ConsumerWidget {
             'Sign Out',
             Icons.logout,
             () {
-              // TODO: Sign out
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Sign out coming soon')),
+              );
             },
             isDestructive: true,
           ),

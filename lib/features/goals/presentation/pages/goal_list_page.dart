@@ -22,7 +22,9 @@ class GoalListPage extends ConsumerWidget {
               : _buildGoalList(context, ref, state),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: Navigate to create goal page
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Create goal coming soon')),
+          );
         },
         child: const Icon(Icons.add),
       ),
@@ -117,7 +119,7 @@ class _GoalCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '${goal.category.label}',
+                  goal.category.label,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const Spacer(),

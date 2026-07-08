@@ -124,11 +124,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   void _handleSignIn() {
     if (_formKey.currentState?.validate() ?? false) {
-      // TODO: Implement sign in via auth controller
+      ref.read(authControllerProvider.notifier).signIn(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
     }
   }
 
   void _handleGoogleSignIn() {
-    // TODO: Implement Google sign in
+    ref.read(authControllerProvider.notifier).signInWithGoogle();
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../providers/calendar_provider.dart';
 
 class CalendarPage extends ConsumerStatefulWidget {
   const CalendarPage({super.key});
@@ -74,7 +73,9 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: Navigate to create event page
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Create event coming soon')),
+          );
         },
         child: const Icon(Icons.add),
       ),

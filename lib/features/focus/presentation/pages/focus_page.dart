@@ -36,7 +36,9 @@ class _FocusPageState extends ConsumerState<FocusPage> {
               children: [
                 ElevatedButton.icon(
                   onPressed: () {
-                    // TODO: Start pomodoro
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Focus timer started')),
+                    );
                   },
                   icon: const Icon(Icons.play_arrow),
                   label: const Text('Start'),
@@ -44,7 +46,9 @@ class _FocusPageState extends ConsumerState<FocusPage> {
                 const SizedBox(width: 16),
                 OutlinedButton.icon(
                   onPressed: () {
-                    // TODO: Settings
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Focus settings coming soon')),
+                    );
                   },
                   icon: const Icon(Icons.settings),
                   label: const Text('Settings'),

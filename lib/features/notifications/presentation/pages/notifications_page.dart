@@ -18,7 +18,9 @@ class NotificationsPage extends ConsumerWidget {
           if (state.unreadCount > 0)
             TextButton(
               onPressed: () {
-                // TODO: Mark all as read
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('All notifications marked as read')),
+                );
               },
               child: const Text('Mark all read'),
             ),

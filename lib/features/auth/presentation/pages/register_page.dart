@@ -135,7 +135,11 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   void _handleSignUp() {
     if (_formKey.currentState?.validate() ?? false) {
-      // TODO: Implement sign up via auth controller
+      ref.read(authControllerProvider.notifier).signUp(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
     }
   }
 }

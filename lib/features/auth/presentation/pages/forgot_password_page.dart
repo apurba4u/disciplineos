@@ -118,7 +118,9 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
 
   Future<void> _handleResetPassword() async {
     if (_formKey.currentState?.validate() ?? false) {
-      // TODO: Implement password reset via auth controller
+      await ref.read(authControllerProvider.notifier).resetPassword(
+        email: _emailController.text.trim(),
+      );
       setState(() {
         _emailSent = true;
       });

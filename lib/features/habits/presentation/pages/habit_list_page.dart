@@ -21,7 +21,9 @@ class HabitListPage extends ConsumerWidget {
               : _buildHabitList(context, ref, state),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: Navigate to create habit page
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Create habit coming soon')),
+          );
         },
         child: const Icon(Icons.add),
       ),

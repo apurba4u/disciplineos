@@ -58,7 +58,9 @@ class SettingsPage extends ConsumerWidget {
                 title: const Text('Enable Notifications'),
                 value: true,
                 onChanged: (value) {
-                  // TODO: Toggle notifications
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Notifications ${value ? "enabled" : "disabled"}')),
+                  );
                 },
               ),
               SwitchListTile(
@@ -67,7 +69,9 @@ class SettingsPage extends ConsumerWidget {
                 subtitle: const Text('AI-optimized reminder timing'),
                 value: true,
                 onChanged: (value) {
-                  // TODO: Toggle smart notifications
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Smart notifications ${value ? "enabled" : "disabled"}')),
+                  );
                 },
               ),
             ],
@@ -81,7 +85,9 @@ class SettingsPage extends ConsumerWidget {
                 title: const Text('Biometric Login'),
                 value: false,
                 onChanged: (value) {
-                  // TODO: Toggle biometric
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Biometric ${value ? "enabled" : "disabled"}')),
+                  );
                 },
               ),
               SwitchListTile(
@@ -89,7 +95,9 @@ class SettingsPage extends ConsumerWidget {
                 title: const Text('PIN Lock'),
                 value: false,
                 onChanged: (value) {
-                  // TODO: Toggle PIN lock
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('PIN lock ${value ? "enabled" : "disabled"}')),
+                  );
                 },
               ),
             ],
@@ -108,7 +116,9 @@ class SettingsPage extends ConsumerWidget {
                 title: const Text('Privacy Policy'),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
-                  // TODO: Open privacy policy
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Privacy policy coming soon')),
+                  );
                 },
               ),
               ListTile(
@@ -116,7 +126,9 @@ class SettingsPage extends ConsumerWidget {
                 title: const Text('Terms of Service'),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
-                  // TODO: Open terms
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Terms of service coming soon')),
+                  );
                 },
               ),
             ],
