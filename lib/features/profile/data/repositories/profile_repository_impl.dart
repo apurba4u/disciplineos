@@ -1,14 +1,17 @@
+import 'dart:io';
 import 'package:dartz/dartz.dart' show Either, Right, Left;
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/user_profile.dart';
 import '../../domain/repositories/profile_repository.dart';
 import '../datasources/profile_remote_datasource.dart';
+import '../datasources/profile_storage_datasource.dart';
 import '../models/user_profile_model.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   final ProfileRemoteDataSource _remoteDataSource;
+  final ProfileStorageDataSource _storageDataSource;
 
-  ProfileRepositoryImpl(this._remoteDataSource);
+  ProfileRepositoryImpl(this._remoteDataSource, this._storageDataSource);
 
   @override
   Future<Either<Failure, UserProfile>> getProfile(String userId) async {
@@ -92,5 +95,18 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Stream<UserProfile> watchProfile(String userId) {
     return _remoteDataSource.watchProfile(userId);
+  }
+
+  @override
+  Future<Either<Failure, String>> uploadProfilePhoto(
+    String userId,
+    File imageFile,
+  ) async {
+    try {
+      final url = await _storageDataSource.uploadProfilePhoto(userId, imageFile);
+      return Right(url);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
   }
 }
