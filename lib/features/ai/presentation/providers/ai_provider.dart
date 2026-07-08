@@ -1,5 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/ai/gemini_provider.dart';
+import '../../../../core/ai/deepseek_provider.dart';
+import '../../../../core/ai/ai_provider_router.dart';
+import '../../../../shared/enums/ai_provider.dart';
 import '../../domain/entities/ai_conversation.dart';
+
+final aiProviderRouterProvider = Provider<AIProviderRouter>((ref) {
+  return AIProviderRouter(
+    primaryProvider: GeminiProvider(),
+    fallbackProvider: DeepSeekProvider(),
+  );
+});
+
+final selectedAIProviderProvider = StateProvider<AIProviderType>((ref) {
+  return AIProviderType.gemini;
+});
 
 class AIChatState {
   final AIConversation? currentConversation;
@@ -30,7 +45,9 @@ class AIChatState {
 }
 
 class AIChatNotifier extends StateNotifier<AIChatState> {
-  AIChatNotifier() : super(const AIChatState());
+  final AIProviderRouter _router;
+
+  AIChatNotifier(this._router) : super(const AIChatState());
 
   void sendMessage(String message) {
     if (state.currentConversation == null) {
@@ -77,27 +94,51 @@ class AIChatNotifier extends StateNotifier<AIChatState> {
   Future<void> _generateResponse(String message) async {
     state = state.copyWith(isGenerating: true, error: null);
 
-    await Future.delayed(const Duration(seconds: 1));
+    try {
+      final result = await _router.executeWithFallback(
+        operation: (provider) => provider.chat(
+          prompt: message,
+          context: _buildContext(),
+        ),
+      );
 
-    final response = AIMessage(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      role: 'assistant',
-      content: 'This is a placeholder response. AI integration will be implemented with Gemini/DeepSeek.',
-      timestamp: DateTime.now(),
-    );
+      final responseContent = result.isSuccess
+          ? (result.summary ?? result.message ?? 'No response generated')
+          : 'Error: ${result.error ?? "Unknown error"}';
 
-    final updatedMessages = [
-      ...state.currentConversation!.messages,
-      response,
-    ];
+      final response = AIMessage(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        role: 'assistant',
+        content: responseContent,
+        timestamp: DateTime.now(),
+      );
 
-    state = state.copyWith(
-      currentConversation: state.currentConversation!.copyWith(
-        messages: updatedMessages,
-        updatedAt: DateTime.now(),
-      ),
-      isGenerating: false,
-    );
+      final updatedMessages = [
+        ...state.currentConversation!.messages,
+        response,
+      ];
+
+      state = state.copyWith(
+        currentConversation: state.currentConversation!.copyWith(
+          messages: updatedMessages,
+          updatedAt: DateTime.now(),
+        ),
+        isGenerating: false,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isGenerating: false,
+        error: e.toString(),
+      );
+    }
+  }
+
+  Map<String, dynamic> _buildContext() {
+    return {
+      'current_date': DateTime.now().toIso8601String(),
+      'app_name': 'Discipline OS',
+      'role': 'AI Discipline Coach',
+    };
   }
 
   void clearConversation() {
@@ -107,5 +148,6 @@ class AIChatNotifier extends StateNotifier<AIChatState> {
 
 final aiChatProvider =
     StateNotifierProvider<AIChatNotifier, AIChatState>((ref) {
-  return AIChatNotifier();
+  final router = ref.watch(aiProviderRouterProvider);
+  return AIChatNotifier(router);
 });
