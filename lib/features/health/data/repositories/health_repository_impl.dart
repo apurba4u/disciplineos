@@ -10,6 +10,8 @@ import '../datasources/health_remote_datasource.dart';
 import '../models/step_log_model.dart';
 import '../models/water_log_model.dart';
 import '../models/sleep_log_model.dart';
+import '../models/workout_log_model.dart';
+import '../models/mood_log_model.dart';
 
 class HealthRepositoryImpl implements HealthRepository {
   final HealthRemoteDataSource _remoteDataSource;
@@ -41,7 +43,8 @@ class HealthRepositoryImpl implements HealthRepository {
   @override
   Future<Either<Failure, List<StepLog>>> getWeeklySteps() async {
     try {
-      return const Right([]);
+      final steps = await _remoteDataSource.getTodaySteps();
+      return Right(steps != null ? [steps] : []);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
@@ -92,7 +95,8 @@ class HealthRepositoryImpl implements HealthRepository {
   @override
   Future<Either<Failure, List<SleepLog>>> getWeeklySleep() async {
     try {
-      return const Right([]);
+      final sleep = await _remoteDataSource.getTodaySleep();
+      return Right(sleep != null ? [sleep] : []);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
@@ -161,7 +165,11 @@ class HealthRepositoryImpl implements HealthRepository {
     DateTime? endDate,
   }) async {
     try {
-      return const Right([]);
+      final workouts = await _remoteDataSource.getWorkoutHistory(
+        startDate: startDate,
+        endDate: endDate,
+      );
+      return Right(workouts);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
@@ -170,7 +178,18 @@ class HealthRepositoryImpl implements HealthRepository {
   @override
   Future<Either<Failure, WorkoutLog>> logWorkout(WorkoutLog log) async {
     try {
-      return Right(log);
+      final model = WorkoutLogModel(
+        id: log.id,
+        userId: log.userId,
+        workoutName: log.workoutName,
+        durationMinutes: log.durationMinutes,
+        calories: log.calories,
+        muscleGroup: log.muscleGroup,
+        notes: log.notes,
+        loggedAt: log.loggedAt,
+      );
+      final result = await _remoteDataSource.logWorkout(model);
+      return Right(result);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
@@ -182,7 +201,11 @@ class HealthRepositoryImpl implements HealthRepository {
     DateTime? endDate,
   }) async {
     try {
-      return const Right([]);
+      final moods = await _remoteDataSource.getMoodHistory(
+        startDate: startDate,
+        endDate: endDate,
+      );
+      return Right(moods);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
@@ -191,7 +214,15 @@ class HealthRepositoryImpl implements HealthRepository {
   @override
   Future<Either<Failure, MoodLog>> logMood(MoodLog log) async {
     try {
-      return Right(log);
+      final model = MoodLogModel(
+        id: log.id,
+        userId: log.userId,
+        mood: log.mood,
+        journal: log.journal,
+        createdAt: log.createdAt,
+      );
+      final result = await _remoteDataSource.logMood(model);
+      return Right(result);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
