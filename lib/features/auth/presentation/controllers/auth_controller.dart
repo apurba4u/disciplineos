@@ -102,4 +102,24 @@ class AuthController extends StateNotifier<AuthState> {
   void clearError() {
     state = state.copyWith(error: null);
   }
+
+  Future<void> signInWithGoogle() async {
+    state = state.copyWith(status: AuthStatus.loading, error: null);
+    // Google sign-in implementation
+    state = state.copyWith(
+      status: AuthStatus.error,
+      error: 'Google sign-in not yet configured',
+    );
+  }
+
+  Future<void> resetPassword({required String email}) async {
+    state = state.copyWith(status: AuthStatus.loading, error: null);
+    // Password reset implementation
+    state = state.copyWith(status: AuthStatus.initial);
+  }
 }
+
+final authControllerProvider =
+    StateNotifierProvider<AuthController, AuthState>((ref) {
+  throw UnimplementedError('Override in ProviderScope');
+});

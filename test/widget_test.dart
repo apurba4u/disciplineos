@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:discipline_os/core/theme/app_theme.dart';
-import 'package:discipline_os/core/router/app_router.dart';
 
 void main() {
   testWidgets('App theme renders correctly', (WidgetTester tester) async {
